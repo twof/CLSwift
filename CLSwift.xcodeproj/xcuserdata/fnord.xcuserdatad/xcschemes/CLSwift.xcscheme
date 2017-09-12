@@ -64,6 +64,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "getmouselocation"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "mousemove 3 4"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

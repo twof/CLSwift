@@ -10,6 +10,7 @@
 		240F1B291F10192D00992F06 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240F1B281F10192D00992F06 /* main.swift */; };
 		240F1B2F1F101A8200992F06 /* Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240F1B2E1F101A8200992F06 /* Argument.swift */; };
 		240F1B311F102D2300992F06 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240F1B301F102D2300992F06 /* CommandCenter.swift */; };
+		24F3DD261F496B6300C617F3 /* Int+LosslessStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F3DD251F496B6300C617F3 /* Int+LosslessStringConvertible.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,7 @@
 		240F1B281F10192D00992F06 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		240F1B2E1F101A8200992F06 /* Argument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Argument.swift; sourceTree = "<group>"; };
 		240F1B301F102D2300992F06 /* CommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
+		24F3DD251F496B6300C617F3 /* Int+LosslessStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+LosslessStringConvertible.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,11 +63,20 @@
 		240F1B1E1F1018FE00992F06 /* CLSwift */ = {
 			isa = PBXGroup;
 			children = (
-				240F1B2E1F101A8200992F06 /* Argument.swift */,
+				24F3DD241F496B1C00C617F3 /* Extensions */,
 				240F1B281F10192D00992F06 /* main.swift */,
+				240F1B2E1F101A8200992F06 /* Argument.swift */,
 				240F1B301F102D2300992F06 /* CommandCenter.swift */,
 			);
 			path = CLSwift;
+			sourceTree = "<group>";
+		};
+		24F3DD241F496B1C00C617F3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				24F3DD251F496B6300C617F3 /* Int+LosslessStringConvertible.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -130,6 +141,7 @@
 				240F1B291F10192D00992F06 /* main.swift in Sources */,
 				240F1B2F1F101A8200992F06 /* Argument.swift in Sources */,
 				240F1B311F102D2300992F06 /* CommandCenter.swift in Sources */,
+				24F3DD261F496B6300C617F3 /* Int+LosslessStringConvertible.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +278,7 @@
 				240F1B251F1018FE00992F06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

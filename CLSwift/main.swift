@@ -9,15 +9,26 @@
 import Foundation
 import Cocoa
 
-let getMouseLocation: Argument = BooleanArgument(argStrings: ["getmouselocation"]) { 
+typealias BoolType = Bool.Type
+
+let getMouseLocation: Argument = Argument<Bool>(argStrings: ["getmouselocation"]) {_ in
     print(NSEvent.mouseLocation())
 }
 
+let mouseMove: Argument = Argument<Int>(argStrings: ["mousemove"], minNumArgs: 2) {args in
+    print(args ?? "Improper arguments")
+}
+
 let commandCenter = CommandCenter(topLevelArgs: [
-    getMouseLocation
+    getMouseLocation,
+    mouseMove
     ])
 
-if let executedCommand = commandCenter.check() {
+
+
+let executedCommand = commandCenter.check()
+
+if let executedCommand = executedCommand {
     executedCommand.execute()
 }
 

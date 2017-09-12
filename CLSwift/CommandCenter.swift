@@ -9,15 +9,18 @@
 import Foundation
 
 class CommandCenter {
-    var topLevelArgs: [Argument]!
     
-    init(topLevelArgs: [Argument]) {
+    var topLevelArgs: [A]
+    
+    init(topLevelArgs: [A]) {
         self.topLevelArgs = topLevelArgs
     }
     
-    func check() -> Argument? {
+    func check() -> A? {
         for arg in self.topLevelArgs {
-            if arg.argStrings.contains(CommandLine.arguments[1]) {
+            let argStrings = arg.argStrings
+            
+            if argStrings.contains(CommandLine.arguments[1]) {
                 return arg
             }
         }
