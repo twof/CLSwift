@@ -8,21 +8,17 @@
 
 import Foundation
 
-//protocol HasAssociatedArguments {
-//    associatedtype ParamType
-//    var params: [ParamType] {get}
-//    var associatedArguments: [Argument<Any>] {get}
-//}
-protocol A {
+public protocol ProtoArg {
     var argStrings: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
     
+    func execute(commandline: [String])
     func execute()
 }
 
-class Argument<U: LosslessStringConvertible>: A {
-    var type: LosslessStringConvertible.Type = U.self
-    var argStrings: [String]
+public class Argument<U: LosslessStringConvertible>: ProtoArg {
+    public var type: LosslessStringConvertible.Type = U.self
+    public var argStrings: [String]
     var associatedArguments: [Argument]?
     var required: Bool
     var location: Int?
@@ -30,7 +26,7 @@ class Argument<U: LosslessStringConvertible>: A {
     
     var onExecution: ([U]?) -> ()
     
-    init(argStrings: [String], minNumArgs: Int=0, required: Bool=false, associatedArguments: [Argument]?=nil, onExecution: @escaping ([U]?) -> ()) {
+    public init(argStrings: [String], minNumArgs: Int=0, required: Bool=false, associatedArguments: [Argument]?=nil, onExecution: @escaping ([U]?) -> ()) {
         self.argStrings = argStrings
         self.required = required
         self.minNumArgs = minNumArgs
@@ -43,7 +39,6 @@ class Argument<U: LosslessStringConvertible>: A {
     func existsAt(params: [String]) -> Int? {
         for argString in argStrings {
             if let location = params.index(of: argString) {
-//                self.location = location
                 return location
             }
         }
@@ -51,7 +46,11 @@ class Argument<U: LosslessStringConvertible>: A {
         return nil
     }
     
-    func execute(){
+    public func execute(){
+        self.execute(commandline: CommandLine.arguments)
+    }
+    
+    public func execute(commandline: [String]) {
         let commandline = CommandLine.arguments
         
         self.location = existsAt(params: commandline)
@@ -78,23 +77,4 @@ class Argument<U: LosslessStringConvertible>: A {
     private func convert<T: LosslessStringConvertible>(value: String, type: T.Type) -> T? {
         return T.self.init(value)
     }
-    
-    func translate(arg: A) -> Argument {
-        return arg as! Argument<U>
-    }
 }
-
-//class BooleanArgument: Argument {
-//    
-//}
-//
-//class IntArgument: Argument, HasAssociatedArguments {
-//    typealias ParamType = Int
-//    
-//    var params: [Int]
-//    var associatedArguments: [Argument]
-//
-//    init(argStrings: [String], required: Bool=false, onExecution: @escaping () -> (), ) {
-//        <#statements#>
-//    }
-//}

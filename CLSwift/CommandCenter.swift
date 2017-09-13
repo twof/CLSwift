@@ -8,15 +8,15 @@
 
 import Foundation
 
-class CommandCenter {
+public class CommandCenter {
     
-    var topLevelArgs: [A]
+    public var topLevelArgs: [ProtoArg]
     
-    init(topLevelArgs: [A]) {
+    public init(topLevelArgs: [ProtoArg]) {
         self.topLevelArgs = topLevelArgs
     }
     
-    func check() -> A? {
+    public func check() -> ProtoArg? {
         for arg in self.topLevelArgs {
             let argStrings = arg.argStrings
             

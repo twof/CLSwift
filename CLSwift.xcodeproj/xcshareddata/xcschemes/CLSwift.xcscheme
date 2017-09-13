@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "240F1B1B1F1018FE00992F06"
-               BuildableName = "CLSwift"
+               BlueprintIdentifier = "2466A7541F68E19A004FCAA7"
+               BuildableName = "CLSwift.framework"
                BlueprintName = "CLSwift"
                ReferencedContainer = "container:CLSwift.xcodeproj">
             </BuildableReference>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "240F1B1B1F1018FE00992F06"
-            BuildableName = "CLSwift"
-            BlueprintName = "CLSwift"
-            ReferencedContainer = "container:CLSwift.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,26 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "240F1B1B1F1018FE00992F06"
-            BuildableName = "CLSwift"
+            BlueprintIdentifier = "2466A7541F68E19A004FCAA7"
+            BuildableName = "CLSwift.framework"
             BlueprintName = "CLSwift"
             ReferencedContainer = "container:CLSwift.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "getmouselocation"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "mousemove 3 4"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -80,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "240F1B1B1F1018FE00992F06"
-            BuildableName = "CLSwift"
+            BlueprintIdentifier = "2466A7541F68E19A004FCAA7"
+            BuildableName = "CLSwift.framework"
             BlueprintName = "CLSwift"
             ReferencedContainer = "container:CLSwift.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
