@@ -7,19 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2466A75A1F68E19A004FCAA7 /* CLSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 2466A7581F68E19A004FCAA7 /* CLSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2466A7641F68E1E3004FCAA7 /* Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2466A7601F68E1E3004FCAA7 /* Argument.swift */; };
-		2466A7651F68E1E3004FCAA7 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2466A7611F68E1E3004FCAA7 /* CommandCenter.swift */; };
-		2466A7661F68E1E3004FCAA7 /* Int+LosslessStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2466A7631F68E1E3004FCAA7 /* Int+LosslessStringConvertible.swift */; };
+		2466A7781F69F16E004FCAA7 /* CLSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 2466A7721F69F16E004FCAA7 /* CLSwift.h */; };
+		2466A77A1F69F16E004FCAA7 /* Int+LosslessStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2466A7751F69F16E004FCAA7 /* Int+LosslessStringConvertible.swift */; };
+		2466A77B1F69F16E004FCAA7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2466A7761F69F16E004FCAA7 /* Info.plist */; };
+		2466A77F1F69F39E004FCAA7 /* Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2466A77D1F69F39E004FCAA7 /* Argument.swift */; };
+		2466A7801F69F39E004FCAA7 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2466A77E1F69F39E004FCAA7 /* CommandCenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2466A7551F68E19A004FCAA7 /* CLSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CLSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2466A7581F68E19A004FCAA7 /* CLSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLSwift.h; sourceTree = "<group>"; };
-		2466A7591F68E19A004FCAA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2466A7601F68E1E3004FCAA7 /* Argument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Argument.swift; sourceTree = "<group>"; };
-		2466A7611F68E1E3004FCAA7 /* CommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
-		2466A7631F68E1E3004FCAA7 /* Int+LosslessStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+LosslessStringConvertible.swift"; sourceTree = "<group>"; };
+		2466A7721F69F16E004FCAA7 /* CLSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLSwift.h; path = Sources/CLSwift.h; sourceTree = SOURCE_ROOT; };
+		2466A7751F69F16E004FCAA7 /* Int+LosslessStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+LosslessStringConvertible.swift"; sourceTree = "<group>"; };
+		2466A7761F69F16E004FCAA7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sources/Info.plist; sourceTree = SOURCE_ROOT; };
+		2466A77D1F69F39E004FCAA7 /* Argument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Argument.swift; sourceTree = "<group>"; };
+		2466A77E1F69F39E004FCAA7 /* CommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,22 +53,32 @@
 		2466A7571F68E19A004FCAA7 /* CLSwift */ = {
 			isa = PBXGroup;
 			children = (
-				2466A7601F68E1E3004FCAA7 /* Argument.swift */,
-				2466A7611F68E1E3004FCAA7 /* CommandCenter.swift */,
-				2466A7621F68E1E3004FCAA7 /* Extensions */,
-				2466A7581F68E19A004FCAA7 /* CLSwift.h */,
-				2466A7591F68E19A004FCAA7 /* Info.plist */,
+				2466A77C1F69F39E004FCAA7 /* Models */,
+				2466A7741F69F16E004FCAA7 /* Extensions */,
+				2466A7721F69F16E004FCAA7 /* CLSwift.h */,
+				2466A7761F69F16E004FCAA7 /* Info.plist */,
 			);
 			path = CLSwift;
 			sourceTree = "<group>";
 		};
-		2466A7621F68E1E3004FCAA7 /* Extensions */ = {
+		2466A7741F69F16E004FCAA7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				2466A7631F68E1E3004FCAA7 /* Int+LosslessStringConvertible.swift */,
+				2466A7751F69F16E004FCAA7 /* Int+LosslessStringConvertible.swift */,
 			);
-			path = Extensions;
-			sourceTree = "<group>";
+			name = Extensions;
+			path = Sources/Extensions;
+			sourceTree = SOURCE_ROOT;
+		};
+		2466A77C1F69F39E004FCAA7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2466A77D1F69F39E004FCAA7 /* Argument.swift */,
+				2466A77E1F69F39E004FCAA7 /* CommandCenter.swift */,
+			);
+			name = Models;
+			path = Sources/Models;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -76,7 +87,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2466A75A1F68E19A004FCAA7 /* CLSwift.h in Headers */,
+				2466A7781F69F16E004FCAA7 /* CLSwift.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +150,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2466A77B1F69F16E004FCAA7 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,9 +161,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2466A7651F68E1E3004FCAA7 /* CommandCenter.swift in Sources */,
-				2466A7641F68E1E3004FCAA7 /* Argument.swift in Sources */,
-				2466A7661F68E1E3004FCAA7 /* Int+LosslessStringConvertible.swift in Sources */,
+				2466A77F1F69F39E004FCAA7 /* Argument.swift in Sources */,
+				2466A7801F69F39E004FCAA7 /* CommandCenter.swift in Sources */,
+				2466A77A1F69F16E004FCAA7 /* Int+LosslessStringConvertible.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
