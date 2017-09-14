@@ -9,10 +9,30 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>CLSwiftTest.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>2466A7541F68E19A004FCAA7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>24FB00F01F6A3FC60027D27C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>OBJ_21</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>OBJ_30</key>
 		<dict>
 			<key>primary</key>
 			<true/>

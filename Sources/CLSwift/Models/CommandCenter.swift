@@ -16,11 +16,13 @@ public class CommandCenter {
         self.topLevelArgs = topLevelArgs
     }
     
-    public func check() -> ProtoArg? {
+    public func check(input: [String]=CommandLine.arguments) -> ProtoArg? {
+        if input.count <= 1 {return nil}
+
         for arg in self.topLevelArgs {
             let argStrings = arg.argStrings
             
-            if argStrings.contains(CommandLine.arguments[1]) {
+            if argStrings.contains(input[1]) {
                 return arg
             }
         }
