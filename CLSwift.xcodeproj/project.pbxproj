@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		247B9A331F6A4A3500042543 /* CLSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B9A321F6A4A3500042543 /* CLSwiftTests.swift */; };
 		247B9A341F6A4C5100042543 /* Int+LosslessStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Int+LosslessStringConvertible.swift */; };
 		247B9A351F6A4C5100042543 /* Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Argument.swift */; };
 		247B9A361F6A4C5100042543 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* CommandCenter.swift */; };
+		247B9A401F6A507B00042543 /* InputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B9A3F1F6A507B00042543 /* InputError.swift */; };
+		247B9A5B1F6A754C00042543 /* CLSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B9A321F6A4A3500042543 /* CLSwiftTests.swift */; };
 		OBJ_26 /* Int+LosslessStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Int+LosslessStringConvertible.swift */; };
 		OBJ_27 /* Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Argument.swift */; };
 		OBJ_28 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* CommandCenter.swift */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		247B9A321F6A4A3500042543 /* CLSwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLSwiftTests.swift; sourceTree = "<group>"; };
+		247B9A3F1F6A507B00042543 /* InputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputError.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Int+LosslessStringConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+LosslessStringConvertible.swift"; sourceTree = "<group>"; };
 		OBJ_12 /* Argument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Argument.swift; sourceTree = "<group>"; };
 		OBJ_13 /* CommandCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		247B9A3E1F6A507B00042543 /* ErrorHandling */ = {
+			isa = PBXGroup;
+			children = (
+				247B9A3F1F6A507B00042543 /* InputError.swift */,
+			);
+			path = ErrorHandling;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +124,7 @@
 		OBJ_8 /* CLSwift */ = {
 			isa = PBXGroup;
 			children = (
+				247B9A3E1F6A507B00042543 /* ErrorHandling */,
 				OBJ_9 /* Extensions */,
 				OBJ_11 /* Models */,
 			);
@@ -196,9 +207,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				247B9A331F6A4A3500042543 /* CLSwiftTests.swift in Sources */,
 				OBJ_26 /* Int+LosslessStringConvertible.swift in Sources */,
 				OBJ_27 /* Argument.swift in Sources */,
+				247B9A401F6A507B00042543 /* InputError.swift in Sources */,
 				OBJ_28 /* CommandCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				247B9A5B1F6A754C00042543 /* CLSwiftTests.swift in Sources */,
 				247B9A341F6A4C5100042543 /* Int+LosslessStringConvertible.swift in Sources */,
 				247B9A351F6A4C5100042543 /* Argument.swift in Sources */,
 				247B9A361F6A4C5100042543 /* CommandCenter.swift in Sources */,

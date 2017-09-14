@@ -50,8 +50,7 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         self.execute(commandline: CommandLine.arguments)
     }
     
-    public func execute(commandline: [String]) {
-        let commandline = CommandLine.arguments
+    public func execute(commandline: [String]=CommandLine.arguments) {
         
         self.location = existsAt(params: commandline)
         
