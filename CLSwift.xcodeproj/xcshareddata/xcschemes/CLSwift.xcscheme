@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_21"
+               BlueprintIdentifier = "OBJ_23"
                BuildableName = "CLSwift.framework"
                BlueprintName = "CLSwift"
                ReferencedContainer = "container:CLSwift.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_30"
+               BlueprintIdentifier = "OBJ_33"
                BuildableName = "CLSwiftTests.xctest"
                BlueprintName = "CLSwiftTests"
                ReferencedContainer = "container:CLSwift.xcodeproj">
@@ -55,7 +55,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "OBJ_21"
+            BlueprintIdentifier = "OBJ_23"
             BuildableName = "CLSwift.framework"
             BlueprintName = "CLSwift"
             ReferencedContainer = "container:CLSwift.xcodeproj">

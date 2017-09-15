@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum InputError: Error {
+public enum InputError: Error {
     
     case invalidType(String)
     case tooFewArgs

@@ -12,8 +12,8 @@ public protocol ProtoArg {
     var argStrings: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
     
-    func execute(commandline: [String])
-    func execute()
+    func execute(commandline: [String]) throws
+    func execute() throws
 }
 
 public class Argument<U: LosslessStringConvertible>: ProtoArg {
@@ -46,11 +46,15 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         return nil
     }
     
-    public func execute(){
-        self.execute(commandline: CommandLine.arguments)
+    public func execute() throws {
+        try self.execute(commandline: CommandLine.arguments)
     }
     
-    public func execute(commandline: [String]=CommandLine.arguments) {
+    public func execute(commandline: [String]=CommandLine.arguments) throws {
+        
+        if commandline.count - 1 < self.minNumArgs {
+            throw InputError.tooFewArgs
+        }
         
         self.location = existsAt(params: commandline)
         

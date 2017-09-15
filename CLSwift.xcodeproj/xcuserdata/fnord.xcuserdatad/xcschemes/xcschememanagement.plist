@@ -32,7 +32,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>OBJ_23</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>OBJ_30</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>OBJ_33</key>
 		<dict>
 			<key>primary</key>
 			<true/>
