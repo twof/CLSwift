@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		247B9A861F6B520400042543 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B9A851F6B520400042543 /* Result.swift */; };
+		247B9A931F6B61DF00042543 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* CommandCenter.swift */; };
+		247B9A941F6B61E300042543 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B9A851F6B520400042543 /* Result.swift */; };
+		247B9A951F6B61E700042543 /* Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Argument.swift */; };
+		247B9A961F6B61F800042543 /* InputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* InputError.swift */; };
 		OBJ_28 /* InputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* InputError.swift */; };
 		OBJ_29 /* Int+LosslessStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Int+LosslessStringConvertible.swift */; };
 		OBJ_30 /* Argument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* Argument.swift */; };
@@ -220,6 +224,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				247B9A951F6B61E700042543 /* Argument.swift in Sources */,
+				247B9A941F6B61E300042543 /* Result.swift in Sources */,
+				247B9A931F6B61DF00042543 /* CommandCenter.swift in Sources */,
+				247B9A961F6B61F800042543 /* InputError.swift in Sources */,
 				OBJ_38 /* CLSwiftTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

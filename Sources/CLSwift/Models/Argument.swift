@@ -53,12 +53,12 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     public func execute(commandline: [String]=CommandLine.arguments) {
     
         if commandline.count - 1 < self.minNumArgs {
-            
+            return onExecution(.error(InputError.tooFewArgs))
         }
         
         self.location = existsAt(params: commandline)
         
-        guard let location = self.location else {onExecution(.error(InputError.argumentNotFound)); return}
+        guard let location = self.location else {return onExecution(.error(InputError.argumentNotFound))}
         
         let args: [U?] = commandline[location+1...minNumArgs+location].map { (arg) -> U? in
             if let casted = convert(value: arg, type: U.self) {
@@ -71,9 +71,9 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         if args.contains(where: { (item) -> Bool in
             return item == nil
         }) {
-            onExecution(Result.error(InputError.invalidType("Could not cast one of the parameters to the specified type: \(U.self)")))
+            return onExecution(Result.error(InputError.invalidType("Could not cast one of the parameters to the specified type: \(U.self)")))
         }else{
-            onExecution(Result.success((args as! [U])))
+            return onExecution(Result.success((args as! [U])))
         }
     }
     
