@@ -51,8 +51,9 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     }
     
     public func execute(commandline: [String]=CommandLine.arguments) {
-    
-        if commandline.count - 1 < self.minNumArgs {
+        
+        // subtracting one for the path and one for the top level arg
+        if commandline.count - 2 < self.minNumArgs {
             return onExecution(.error(InputError.tooFewArgs))
         }
         
