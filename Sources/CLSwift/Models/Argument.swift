@@ -12,8 +12,8 @@ public protocol ProtoArg {
     var argStrings: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
     
-    func execute(commandline: [String]) throws
-    func execute() throws
+    func execute(commandline: [String])
+    func execute()
 }
 
 public class Argument<U: LosslessStringConvertible>: ProtoArg {
@@ -24,9 +24,9 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     var location: Int?
     var minNumArgs: Int
     
-    var onExecution: ([U]?) -> ()
+    var onExecution: (Result<[U]>) -> ()
     
-    public init(argStrings: [String], minNumArgs: Int=0, required: Bool=false, associatedArguments: [Argument]?=nil, onExecution: @escaping ([U]?) -> ()) {
+    public init(argStrings: [String], minNumArgs: Int=0, required: Bool=false, associatedArguments: [Argument]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
         self.argStrings = argStrings
         self.required = required
         self.minNumArgs = minNumArgs
@@ -46,19 +46,19 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         return nil
     }
     
-    public func execute() throws {
-        try self.execute(commandline: CommandLine.arguments)
+    public func execute() {
+        self.execute(commandline: CommandLine.arguments)
     }
     
-    public func execute(commandline: [String]=CommandLine.arguments) throws {
-        
+    public func execute(commandline: [String]=CommandLine.arguments) {
+    
         if commandline.count - 1 < self.minNumArgs {
-            throw InputError.tooFewArgs
+            
         }
         
         self.location = existsAt(params: commandline)
         
-        guard let location = self.location else {onExecution(nil); return}
+        guard let location = self.location else {onExecution(.error(InputError.argumentNotFound)); return}
         
         let args: [U?] = commandline[location+1...minNumArgs+location].map { (arg) -> U? in
             if let casted = convert(value: arg, type: U.self) {
@@ -71,9 +71,9 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         if args.contains(where: { (item) -> Bool in
             return item == nil
         }) {
-            onExecution(nil)
+            onExecution(Result.error(InputError.invalidType("Could not cast one of the parameters to the specified type: \(U.self)")))
         }else{
-            onExecution((args as! [U]))
+            onExecution(Result.success((args as! [U])))
         }
     }
     

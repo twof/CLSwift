@@ -11,6 +11,7 @@ import Foundation
 public enum InputError: Error {
     
     case invalidType(String)
+    case argumentNotFound
     case tooFewArgs
     case invalidCommand
     case unimplimented
