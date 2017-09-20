@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import CLSwift
 
 class CLSwiftTests: XCTestCase {
 
