@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		242593421FBBD2EC009447B2 /* ArrayElementString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242593411FBBD2EC009447B2 /* ArrayElementString.swift */; };
+		242593441FBBD354009447B2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242593431FBBD354009447B2 /* String.swift */; };
+		242593451FBBF55D009447B2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242593431FBBD354009447B2 /* String.swift */; };
+		242593461FBBF560009447B2 /* ArrayElementString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242593411FBBD2EC009447B2 /* ArrayElementString.swift */; };
 		247B9A861F6B520400042543 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B9A851F6B520400042543 /* Result.swift */; };
 		247B9A931F6B61DF00042543 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* CommandCenter.swift */; };
 		247B9A941F6B61E300042543 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247B9A851F6B520400042543 /* Result.swift */; };
@@ -30,6 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		242593411FBBD2EC009447B2 /* ArrayElementString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayElementString.swift; sourceTree = "<group>"; };
+		242593431FBBD354009447B2 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		247B9A851F6B520400042543 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		OBJ_10 /* InputError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputError.swift; sourceTree = "<group>"; };
 		OBJ_14 /* Argument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Argument.swift; sourceTree = "<group>"; };
@@ -63,6 +69,8 @@
 		OBJ_11 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				242593411FBBD2EC009447B2 /* ArrayElementString.swift */,
+				242593431FBBD354009447B2 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -216,9 +224,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				242593441FBBD354009447B2 /* String.swift in Sources */,
 				OBJ_28 /* InputError.swift in Sources */,
 				247B9A861F6B520400042543 /* Result.swift in Sources */,
 				OBJ_30 /* Argument.swift in Sources */,
+				242593421FBBD2EC009447B2 /* ArrayElementString.swift in Sources */,
 				OBJ_31 /* CommandCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,11 +237,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				242593451FBBF55D009447B2 /* String.swift in Sources */,
 				247B9A951F6B61E700042543 /* Argument.swift in Sources */,
 				247B9A941F6B61E300042543 /* Result.swift in Sources */,
 				247B9A931F6B61DF00042543 /* CommandCenter.swift in Sources */,
 				247B9A961F6B61F800042543 /* InputError.swift in Sources */,
 				OBJ_38 /* CLSwiftTests.swift in Sources */,
+				242593461FBBF560009447B2 /* ArrayElementString.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +338,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -334,7 +346,7 @@
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				USE_HEADERMAP = NO;
 			};
 			name = Debug;
@@ -411,14 +423,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				USE_HEADERMAP = NO;
 			};
 			name = Release;

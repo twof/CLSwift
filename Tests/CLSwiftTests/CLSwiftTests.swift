@@ -21,14 +21,14 @@ class CLSwiftTests: XCTestCase {
     }
 
     func testEmpty() {
-        let commandCenter = CommandCenter(topLevelArgs: [])
-        let triggeredCommand = commandCenter.check(input: ["path/to/binary"])
+        let commandCenter = CommandCenter(topLevelArgs: [], input: ["path/to/binary"])
+        let triggeredCommand = commandCenter.check()
         XCTAssert(triggeredCommand == nil)
     }
     
     
     func testLowerThanMinimumArgumentsInputLength() {
-        let arg = Argument<Int>(argStrings: ["hello"], minNumArgs: 4) { (result) in
+        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .number(4)) { (result) in
             switch result {
             case .success(_):
                 // Success is not expected
@@ -45,11 +45,11 @@ class CLSwiftTests: XCTestCase {
         
         let commandline = ["path/to/binary", "hello", "1", "2"]
         
-        let commandCenter = CommandCenter(topLevelArgs: [arg])
-        let triggeredCommand = commandCenter.check(input: commandline)
+        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
+        let triggeredCommand = commandCenter.check()
         
         if let triggeredCommand = triggeredCommand {
-            triggeredCommand.execute(commandline: commandline)
+            triggeredCommand.execute(commandline: commandCenter.input)
         } else {
             XCTFail()
         }

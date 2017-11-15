@@ -1,19 +1,30 @@
-//
-//  Option.swift
-//  CLSwift
-//
-//  Created by fnord on 7/7/17.
-//  Copyright © 2017 twof. All rights reserved.
-//
-
 import Foundation
+
+public enum NumberOfArgs {
+    case none
+    case range(Range<Int>)
+    case number(Int)
+    case any
+    
+    func isValid(args: [String]) -> Bool {
+        switch self {
+        case .none:
+            return args.count == 0
+        case .range(let range):
+            return range.contains(args.count)
+        case .number(let num):
+            return args.count == num
+        case .any:
+            return true
+        }
+    }
+}
 
 public protocol ProtoArg {
     var argStrings: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
     
-    func execute(commandline: [String])
-    func execute()
+    func execute(commandline: [ArgumentEntity])
 }
 
 public class Argument<U: LosslessStringConvertible>: ProtoArg {
@@ -22,14 +33,14 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     var associatedArguments: [Argument]?
     var required: Bool
     var location: Int?
-    var minNumArgs: Int
+    var numArgs: NumberOfArgs
     
     var onExecution: (Result<[U]>) -> ()
     
-    public init(argStrings: [String], minNumArgs: Int=0, required: Bool=false, associatedArguments: [Argument]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
+    public init(argStrings: [String], numArgs: NumberOfArgs = .none, required: Bool=false, associatedArguments: [Argument]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
         self.argStrings = argStrings
         self.required = required
-        self.minNumArgs = minNumArgs
+        self.numArgs = numArgs
         
         self.associatedArguments = associatedArguments
         
@@ -46,22 +57,14 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         return nil
     }
     
-    public func execute() {
-        self.execute(commandline: CommandLine.arguments)
-    }
-    
-    public func execute(commandline: [String]=CommandLine.arguments) {
+    public func execute(commandline: [ArgumentEntity]) {
         
         // subtracting one for the path and one for the top level arg
-        if commandline.count - 2 < self.minNumArgs {
+        if !self.numArgs.isValid(args: commandline[0].parameters) {
             return onExecution(.error(InputError.tooFewArgs))
         }
         
-        self.location = existsAt(params: commandline)
-        
-        guard let location = self.location else {return onExecution(.error(InputError.argumentNotFound))}
-        
-        let args: [U?] = commandline[location+1...minNumArgs+location].map { (arg) -> U? in
+        let args: [U?] = commandline[0].parameters.map { (arg) -> U? in
             if let casted = convert(value: arg, type: U.self) {
                 return casted
             }else{
