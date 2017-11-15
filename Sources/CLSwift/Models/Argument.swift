@@ -3,6 +3,8 @@ import Foundation
 public enum NumberOfArgs {
     case none
     case range(Range<Int>)
+    case greaterThan(Int)
+    case lessThan(Int)
     case number(Int)
     case any
     
@@ -12,6 +14,10 @@ public enum NumberOfArgs {
             return args.count == 0
         case .range(let range):
             return range.contains(args.count)
+        case .greaterThan(let num):
+            return args.count > num
+        case .lessThan(let num):
+            return args.count < num
         case .number(let num):
             return args.count == num
         case .any:

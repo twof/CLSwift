@@ -54,4 +54,60 @@ class CLSwiftTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testGreaterThanMaximumArgumentsInputLength() {
+        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .number(1)) { (result) in
+            switch result {
+            case .success(_):
+                // Success is not expected
+                XCTFail()
+            case .error(let error):
+                switch error {
+                case InputError.tooFewArgs:
+                    XCTAssert(true)// This error is expected
+                default:
+                    XCTFail()
+                }
+            }
+        }
+        
+        let commandline = ["path/to/binary", "hello", "1", "2"]
+        
+        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
+        let triggeredCommand = commandCenter.check()
+        
+        if let triggeredCommand = triggeredCommand {
+            triggeredCommand.execute(commandline: commandCenter.input)
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testLessThanArgumentNumberRange() {
+        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .range(3..<5)) { (result) in
+            switch result {
+            case .success(_):
+                // Success is not expected
+                XCTFail()
+            case .error(let error):
+                switch error {
+                case InputError.tooFewArgs:
+                    XCTAssert(true)// This error is expected
+                default:
+                    XCTFail()
+                }
+            }
+        }
+        
+        let commandline = ["path/to/binary", "hello", "1", "2"]
+        
+        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
+        let triggeredCommand = commandCenter.check()
+        
+        if let triggeredCommand = triggeredCommand {
+            triggeredCommand.execute(commandline: commandCenter.input)
+        } else {
+            XCTFail()
+        }
+    }
 }
