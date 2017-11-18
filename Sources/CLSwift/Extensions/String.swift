@@ -11,4 +11,13 @@ public extension String {
         }
         return false
     }
+    
+    /// Convert self to any type that conforms to LosslessStringConvertible
+    func convertTo<T: LosslessStringConvertible>(_ type: T.Type) throws -> T {
+        guard let converted = T.self.init(self) else {
+            throw InputError.invalidType("Unable to convert \(self) is not a \(T.Type.self)")
+        }
+        
+        return converted
+    }
 }

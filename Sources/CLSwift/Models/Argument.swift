@@ -47,7 +47,6 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         self.argStrings = argStrings
         self.required = required
         self.numArgs = numArgs
-        
         self.associatedArguments = associatedArguments
         
         self.onExecution = onExecution
@@ -64,30 +63,18 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     }
     
     public func execute(commandline: [ArgumentEntity]) {
-        
-        // subtracting one for the path and one for the top level arg
         if !self.numArgs.isValid(args: commandline[0].parameters) {
             return onExecution(.error(InputError.tooFewArgs))
         }
         
-        let args: [U?] = commandline[0].parameters.map { (arg) -> U? in
-            if let casted = convert(value: arg, type: U.self) {
-                return casted
-            }else{
-                return nil
+        do {
+            let args: [U] = try commandline[0].parameters.map { (arg) -> U in
+                return try arg.convertTo(U.self)
             }
+            
+            return onExecution(Result.success(args))
+        } catch {
+            return onExecution(Result.error(error))
         }
-        
-        if args.contains(where: { (item) -> Bool in
-            return item == nil
-        }) {
-            return onExecution(Result.error(InputError.invalidType("Could not cast one of the parameters to the specified type: \(U.self)")))
-        }else{
-            return onExecution(Result.success((args as! [U])))
-        }
-    }
-    
-    private func convert<T: LosslessStringConvertible>(value: String, type: T.Type) -> T? {
-        return T.self.init(value)
     }
 }
