@@ -6,7 +6,7 @@ public protocol ProtoFlag {
     func execute(entity: ArgumentEntity, state: [String: Any]) throws -> [String: Any]
 }
 
-class Flag<U: LosslessStringConvertible>: ProtoFlag {
+public class Flag<U: LosslessStringConvertible>: ProtoFlag {
     var argStrings: [String]
     var numArgs: NumberOfArgs
     
