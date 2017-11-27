@@ -7,10 +7,10 @@ public protocol ProtoFlag {
 }
 
 public class Flag<U: LosslessStringConvertible>: ProtoFlag {
-    var argStrings: [String]
-    var numArgs: NumberOfArgs
+    public var argStrings: [String]
+    public var numArgs: NumberOfArgs
     
-    var onExecution: ([U], State) -> State
+    public var onExecution: ([U], State) -> State
     
     public init(argStrings: [String], numArgs: NumberOfArgs = .none, onExecution: @escaping ([U], State) -> [String: Any]) {
         self.argStrings = argStrings
@@ -19,7 +19,7 @@ public class Flag<U: LosslessStringConvertible>: ProtoFlag {
         self.onExecution = onExecution
     }
     
-    func execute(entity: ArgumentEntity, state: State) throws -> [String : Any] {
+    public func execute(entity: ArgumentEntity, state: State) throws -> [String : Any] {
         if !self.numArgs.isValid(args: entity.parameters) {
             throw InputError.tooFewArgs
         }
