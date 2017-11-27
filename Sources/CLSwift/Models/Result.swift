@@ -8,7 +8,9 @@
 
 import Foundation
 
+public typealias State = [String: Any]
+
 public enum Result<T> {
-    case success(T)
+    case success(T, State)
     case error(Error)
 }

@@ -111,5 +111,37 @@ class CLSwiftTests: XCTestCase {
         }
     }
     
-    
+    func testWithAssociatedArg() {
+        let flag = Flag<Bool>(argStrings: ["-f"]) { (params, state)  -> [String : Any] in
+            guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
+            XCTAssert(params == [])
+            XCTAssert(foo == "bar")
+            return state
+        }
+        
+        let arg = Argument<Int>(argStrings: ["hello"], state: ["foo": "bar"], associatedArguments: [flag]) { (result) in
+            switch result {
+            case .success(let vals, let state):
+                XCTAssert(true)
+            case .error(let error):
+                switch error {
+                case InputError.tooFewArgs:
+                    XCTFail()
+                default:
+                    XCTFail()
+                }
+            }
+        }
+        
+        let commandline = ["path/to/binary", "hello", "1", "2", "-f"]
+        
+        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
+        let triggeredCommand = commandCenter.check()
+        
+        if let triggeredCommand = triggeredCommand {
+            triggeredCommand.execute(commandline: commandCenter.input)
+        } else {
+            XCTFail()
+        }
+    }
 }

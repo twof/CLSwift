@@ -29,6 +29,7 @@ public enum NumberOfArgs {
 public protocol ProtoArg {
     var argStrings: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
+    var state: [String: Any] {get set}
     
     func execute(commandline: [ArgumentEntity])
 }
@@ -36,30 +37,19 @@ public protocol ProtoArg {
 public class Argument<U: LosslessStringConvertible>: ProtoArg {
     public var type: LosslessStringConvertible.Type = U.self
     public var argStrings: [String]
-    var associatedArguments: [Argument]?
-    var required: Bool
-    var location: Int?
+    public var state: [String: Any]
+    var associatedArguments: [ProtoFlag]?
     var numArgs: NumberOfArgs
     
     var onExecution: (Result<[U]>) -> ()
     
-    public init(argStrings: [String], numArgs: NumberOfArgs = .none, required: Bool=false, associatedArguments: [Argument]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
+    public init(argStrings: [String], state: [String: Any]=[:], numArgs: NumberOfArgs = .any, associatedArguments: [ProtoFlag]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
         self.argStrings = argStrings
-        self.required = required
+        self.state = state
         self.numArgs = numArgs
         self.associatedArguments = associatedArguments
         
         self.onExecution = onExecution
-    }
-    
-    func existsAt(params: [String]) -> Int? {
-        for argString in argStrings {
-            if let location = params.index(of: argString) {
-                return location
-            }
-        }
-        
-        return nil
     }
     
     public func execute(commandline: [ArgumentEntity]) {
@@ -67,12 +57,32 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
             return onExecution(.error(InputError.tooFewArgs))
         }
         
+        if let associatedArguments = self.associatedArguments {
+            for arg in associatedArguments {
+                let argStrings = arg.argStrings
+                
+                for argString in argStrings {
+                    guard let foundIndex = commandline.index(where: { (token) -> Bool in
+                        return token.command == argString
+                    }) else {continue}
+                    
+                    let triggeredFlag = commandline[foundIndex]
+                    
+                    do {
+                        self.state = try arg.execute(entity: triggeredFlag, state: self.state)
+                    } catch {
+                        return onExecution(Result.error(error))
+                    }
+                }
+            }
+        }
+        
         do {
             let args: [U] = try commandline[0].parameters.map { (arg) -> U in
                 return try arg.convertTo(U.self)
             }
             
-            return onExecution(Result.success(args))
+            return onExecution(Result.success(args, self.state))
         } catch {
             return onExecution(Result.error(error))
         }

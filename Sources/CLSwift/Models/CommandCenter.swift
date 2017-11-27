@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /// Command could be a flag or a base command
 /// Parameters could be an empty array in the case that there are no parameters
 public struct ArgumentEntity {
@@ -34,11 +33,10 @@ public class CommandCenter {
             let argStrings = arg.argStrings
             
             for argString in argStrings {
-                guard let found = input.index(where: { (token) -> Bool in
+                guard input.index(where: { (token) -> Bool in
                     return token.command == argString
-                }) else {continue}
+                }) != nil else {continue}
                
-//                remainingInput = Array(remainingInput[(found+1)...])
                 return arg
             }
         }
