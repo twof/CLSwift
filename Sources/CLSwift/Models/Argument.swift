@@ -56,18 +56,18 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     public var type: LosslessStringConvertible.Type = U.self
     public var argStrings: [String]
     public var state: State
-    var associatedArguments: [ProtoFlag]?
+    var associatedArguments: [ProtoFlag]
     var numArgs: NumberOfArgs
     var help: String
     
-    var onExecution: (Result<[U]>) -> ()
+    var onExecution: ([U], State) -> ()
     
     public init(argStrings: [String],
                 help: String,
                 state: State=[:],
                 numArgs: NumberOfArgs = .any,
-                associatedArguments: [ProtoFlag]?=nil,
-                onExecution: @escaping (Result<[U]>) -> ()) {
+                associatedArguments: [ProtoFlag]=[],
+                onExecution: @escaping ([U], State) -> ()) {
         self.argStrings = argStrings
         self.help = help
         self.state = state
@@ -79,27 +79,28 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     
     public func execute(commandline: [ArgumentEntity]) {
         if !self.numArgs.isValid(args: commandline[0].parameters) {
-            return onExecution(.error(InputError.tooFewArgs))
+//            return onExecution(.error(InputError.tooFewArgs))
+            print(getHelp())
+            return
         }
         
-        if let associatedArguments = self.associatedArguments {
-            var newState = self.state
-            for arg in associatedArguments {
-                let argStrings = arg.argStrings
+        for arg in associatedArguments {
+            let argStrings = arg.argStrings
+            
+            for argString in argStrings {
+                guard let foundIndex = commandline.index(where: { (token) -> Bool in
+                    return token.command == argString
+                }) else {continue}
                 
-                for argString in argStrings {
-                    guard let foundIndex = commandline.index(where: { (token) -> Bool in
-                        return token.command == argString
-                    }) else {continue}
-                    
-                    let triggeredFlag = commandline[foundIndex]
-                    
-                    do {
-                        let changes = try arg.execute(entity: triggeredFlag, state: self.state).difference(other: self.state)
-                        self.state = self.state.updated(with: changes)
-                    } catch {
-                        return onExecution(Result.error(error))
-                    }
+                let triggeredFlag = commandline[foundIndex]
+                
+                do {
+                    let changes = try arg.execute(entity: triggeredFlag, state: self.state).difference(other: self.state)
+                    self.state = self.state.updated(with: changes)
+                } catch {
+                    print(getHelp())
+                    return
+//                    return onExecution(Result.error(error))
                 }
             }
         }
@@ -109,13 +110,32 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
                 return try arg.convertTo(U.self)
             }
             
-            return onExecution(Result.success(args, self.state))
+            return onExecution(args, self.state)
         } catch {
-            return onExecution(Result.error(error))
+            print(getHelp())
+            return
+//            return onExecution(Result.error(error))
         }
     }
     
-//    private func getHelp() -> String {
-//        
-//    }
+    private func getHelp() -> String {
+        var usage =
+"""
+Usage: \(argStrings.joined(separator: "|")) \(numArgs.stringRep(typeString: String(describing: self.type))) [options]
+        
+"""
+        var helpString =
+"""
+\(usage)
+Description:
+\(self.help)
+
+"""
+        
+        for flag in associatedArguments {
+            helpString.append("\n\(flag.getHelp())")
+        }
+        
+        return helpString
+    }
 }

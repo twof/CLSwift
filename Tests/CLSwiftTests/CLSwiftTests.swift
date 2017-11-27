@@ -28,19 +28,12 @@ class CLSwiftTests: XCTestCase {
     
     
     func testLowerThanMinimumArgumentsInputLength() {
-        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .number(4)) { (result) in
-            switch result {
-            case .success(_):
-                // Success is not expected
-                XCTFail()
-            case .error(let error):
-                switch error {
-                case InputError.tooFewArgs:
-                    XCTAssert(true)// This error is expected
-                default:
-                    XCTFail()
-                }
-            }
+        let arg = Argument<Int>(argStrings: ["hello"],
+                                help: "Does foo for bar",
+                                numArgs: .number(4))
+        { (vals, state) in
+            // Success is not expected
+            XCTFail()
         }
         
         let commandline = ["path/to/binary", "hello", "1", "2"]
@@ -56,63 +49,104 @@ class CLSwiftTests: XCTestCase {
     }
     
     func testGreaterThanMaximumArgumentsInputLength() {
-        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .number(1)) { (result) in
-            switch result {
-            case .success(_):
-                // Success is not expected
-                XCTFail()
-            case .error(let error):
-                switch error {
-                case InputError.tooFewArgs:
-                    XCTAssert(true)// This error is expected
-                default:
-                    XCTFail()
-                }
-            }
+        let arg = Argument<Int>(argStrings: ["hello"],
+                                help: "Does foo for bar",
+                                numArgs: .number(1))
+        { (vals, state) in
+            XCTFail()
         }
-        
+
         let commandline = ["path/to/binary", "hello", "1", "2"]
-        
+
         let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
         let triggeredCommand = commandCenter.check()
-        
+
         if let triggeredCommand = triggeredCommand {
             triggeredCommand.execute(commandline: commandCenter.input)
         } else {
             XCTFail()
         }
     }
-    
-    func testLessThanArgumentNumberRange() {
-        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .range(3..<5)) { (result) in
-            switch result {
-            case .success(_):
-                // Success is not expected
-                XCTFail()
-            case .error(let error):
-                switch error {
-                case InputError.tooFewArgs:
-                    XCTAssert(true)// This error is expected
-                default:
-                    XCTFail()
-                }
-            }
-        }
-        
-        let commandline = ["path/to/binary", "hello", "1", "2"]
-        
-        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
-        let triggeredCommand = commandCenter.check()
-        
-        if let triggeredCommand = triggeredCommand {
-            triggeredCommand.execute(commandline: commandCenter.input)
-        } else {
-            XCTFail()
-        }
-    }
-    
+//
+//    func testLessThanArgumentNumberRange() {
+//        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .range(3..<5)) { (result) in
+//            switch result {
+//            case .success(_):
+//                // Success is not expected
+//                XCTFail()
+//            case .error(let error):
+//                switch error {
+//                case InputError.tooFewArgs:
+//                    XCTAssert(true)// This error is expected
+//                default:
+//                    XCTFail()
+//                }
+//            }
+//        }
+//
+//        let commandline = ["path/to/binary", "hello", "1", "2"]
+//
+//        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
+//        let triggeredCommand = commandCenter.check()
+//
+//        if let triggeredCommand = triggeredCommand {
+//            triggeredCommand.execute(commandline: commandCenter.input)
+//        } else {
+//            XCTFail()
+//        }
+//    }
+//
     func testWithAssociatedArg() {
-        let flag = Flag<Bool>(argStrings: ["-f"]) { (params, state)  -> State in
+        let boolFlag = Flag<Bool>(argStrings: ["-f"],
+                              help: "Replaces foo value with baz")
+        { (params, state)  -> State in
+            guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
+            XCTAssert(params == [])
+            XCTAssert(foo == "bar")
+            var newState = state
+            newState["foo"] = "baz"
+            return newState
+        }
+
+        let legsFlag = Flag<Int>(argStrings: ["-l"],
+                                 help: "Sets leg number of legs",
+                                 numArgs: .number(1))
+        { (params, state) -> State in
+            var newState = state
+            newState["legs"] = params[0]
+            return newState
+        }
+
+        let arg = Argument<Int>(argStrings: ["hello"],
+                                help: "Takes foo, hello and legs and does foobar",
+                                state: ["foo": "bar", "hello": "world", "legs": 2],
+                                associatedArguments: [boolFlag, legsFlag])
+        { (vals, state) in
+            if state["foo"] as? String == "baz" {
+                print("-f flag used")
+            }
+            if state["legs"] as? Int != 2 {
+                print("-l flag used")
+            }
+            XCTAssert(true)
+        }
+
+        let commandline = ["path/to/binary", "hello", "1", "2", "-f", "-l", "1"]
+
+        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
+        let triggeredCommand = commandCenter.check()
+
+        if let triggeredCommand = triggeredCommand {
+            triggeredCommand.execute(commandline: commandCenter.input)
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testFailureWithFlags() {
+        let flag = Flag<Bool>(argStrings: ["-f"],
+                              help: "Replaces foo value with baz")
+        { (params, state)  -> State in
             guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
             XCTAssert(params == [])
             XCTAssert(foo == "bar")
@@ -121,28 +155,27 @@ class CLSwiftTests: XCTestCase {
             return newState
         }
         
-        let legsFlag = Flag<Int>(argStrings: ["-l"], numArgs: .number(1)) { (params, state) -> State in
+        let legsFlag = Flag<Int>(argStrings: ["-l"],
+                                 help: "Sets leg number of legs",
+                                 numArgs: .number(1))
+        { (params, state) -> State in
             var newState = state
             newState["legs"] = params[0]
             return newState
         }
         
-        let arg = Argument<Int>(argStrings: ["hello"], state: ["foo": "bar", "hello": "world", "legs": 2], associatedArguments: [flag, legsFlag]) { (result) in
-            switch result {
-            case .success(let vals, let state):
-                XCTAssert(true)
-            case .error(let error):
-                switch error {
-                case InputError.tooFewArgs:
-                    XCTFail()
-                default:
-                    XCTFail()
-                }
-            }
+        let arg = Argument<Int>(argStrings: ["hello"],
+                                help: "Takes foo, hello and legs and does foobar",
+                                state: ["foo": "bar", "hello": "world", "legs": 2],
+                                numArgs: .number(2),
+                                associatedArguments: [flag, legsFlag])
+        { (vals, state) in
+            XCTFail()
         }
         
-        let commandline = ["path/to/binary", "hello", "1", "2", "-f", "-l", "1"]
-        
+        // misuse of -l
+        let commandline = ["path/to/binary", "hello", "1", "2", "-f", "-l"]
+`
         let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
         let triggeredCommand = commandCenter.check()
         

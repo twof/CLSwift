@@ -4,6 +4,7 @@ public protocol ProtoFlag {
     var argStrings: [String] {get set}
     var numArgs: NumberOfArgs {get set}
     func execute(entity: ArgumentEntity, state: State) throws -> State
+    func getHelp() -> String
 }
 
 public class Flag<U: LosslessStringConvertible>: ProtoFlag {
@@ -27,7 +28,7 @@ public class Flag<U: LosslessStringConvertible>: ProtoFlag {
     
     public func execute(entity: ArgumentEntity, state: State) throws -> State {
         if !self.numArgs.isValid(args: entity.parameters) {
-            throw InputError.tooFewArgs
+            throw InputError.wrongNumberOfArgs(expected: self.numArgs, actual: entity.parameters.count)
         }
         
         do {
@@ -41,7 +42,7 @@ public class Flag<U: LosslessStringConvertible>: ProtoFlag {
         }
     }
     
-    func getHelp() -> String {
+    public func getHelp() -> String {
         let possibleArgs: String = self.argStrings.joined(separator: ", ")
         let types: String = self.numArgs.stringRep(typeString: String(describing: self.type))
         return "\(possibleArgs) \(types)    \(self.help)"
