@@ -7,13 +7,19 @@ public protocol ProtoFlag {
 }
 
 public class Flag<U: LosslessStringConvertible>: ProtoFlag {
+    public var type: LosslessStringConvertible.Type = U.self
     public var argStrings: [String]
     public var numArgs: NumberOfArgs
+    var help: String
     
     public var onExecution: ([U], State) -> State
     
-    public init(argStrings: [String], numArgs: NumberOfArgs = .none, onExecution: @escaping ([U], State) -> State) {
+    public init(argStrings: [String],
+                help: String,
+                numArgs: NumberOfArgs = .any,
+                onExecution: @escaping ([U], State) -> State) {
         self.argStrings = argStrings
+        self.help = help
         self.numArgs = numArgs
         
         self.onExecution = onExecution
@@ -33,5 +39,11 @@ public class Flag<U: LosslessStringConvertible>: ProtoFlag {
         } catch {
             throw error
         }
+    }
+    
+    func getHelp() -> String {
+        let possibleArgs: String = self.argStrings.joined(separator: ", ")
+        let types: String = self.numArgs.stringRep(typeString: String(describing: self.type))
+        return "\(possibleArgs) \(types)    \(self.help)"
     }
 }

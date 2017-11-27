@@ -24,6 +24,24 @@ public enum NumberOfArgs {
             return true
         }
     }
+    
+    func stringRep(typeString: String) -> String {
+        switch self {
+        case .none:
+            return ""
+        case .range(let range):
+            return "<\(String(describing: range)) of \(typeString)>"
+        case .greaterThan(let num):
+            return "< >\(num) of \(typeString)>"
+        case .lessThan(let num):
+            return "< <\(num) of \(typeString)>"
+        case .number(let num):
+            let types = Array(repeating: typeString, count: num).joined(separator: ", ")
+            return "<\(types)>"
+        case .any:
+            return ""
+        }
+    }
 }
 
 public protocol ProtoArg {
@@ -40,15 +58,22 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
     public var state: State
     var associatedArguments: [ProtoFlag]?
     var numArgs: NumberOfArgs
+    var help: String
     
     var onExecution: (Result<[U]>) -> ()
     
-    public init(argStrings: [String], state: State=[:], numArgs: NumberOfArgs = .any, associatedArguments: [ProtoFlag]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
+    public init(argStrings: [String],
+                help: String,
+                state: State=[:],
+                numArgs: NumberOfArgs = .any,
+                associatedArguments: [ProtoFlag]?=nil,
+                onExecution: @escaping (Result<[U]>) -> ()) {
         self.argStrings = argStrings
+        self.help = help
         self.state = state
         self.numArgs = numArgs
         self.associatedArguments = associatedArguments
-        
+
         self.onExecution = onExecution
     }
     
@@ -89,4 +114,8 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
             return onExecution(Result.error(error))
         }
     }
+    
+//    private func getHelp() -> String {
+//        
+//    }
 }
