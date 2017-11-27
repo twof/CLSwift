@@ -8,7 +8,7 @@
 
 import Foundation
 
-public typealias State = [String: Any]
+public typealias State = [String: AnyHashable]
 
 public enum Result<T> {
     case success(T, State)

@@ -29,7 +29,7 @@ public enum NumberOfArgs {
 public protocol ProtoArg {
     var argStrings: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
-    var state: [String: Any] {get set}
+    var state: State {get set}
     
     func execute(commandline: [ArgumentEntity])
 }
@@ -37,13 +37,13 @@ public protocol ProtoArg {
 public class Argument<U: LosslessStringConvertible>: ProtoArg {
     public var type: LosslessStringConvertible.Type = U.self
     public var argStrings: [String]
-    public var state: [String: Any]
+    public var state: State
     var associatedArguments: [ProtoFlag]?
     var numArgs: NumberOfArgs
     
     var onExecution: (Result<[U]>) -> ()
     
-    public init(argStrings: [String], state: [String: Any]=[:], numArgs: NumberOfArgs = .any, associatedArguments: [ProtoFlag]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
+    public init(argStrings: [String], state: State=[:], numArgs: NumberOfArgs = .any, associatedArguments: [ProtoFlag]?=nil, onExecution: @escaping (Result<[U]>) -> ()) {
         self.argStrings = argStrings
         self.state = state
         self.numArgs = numArgs
@@ -58,6 +58,7 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         }
         
         if let associatedArguments = self.associatedArguments {
+            var newState = self.state
             for arg in associatedArguments {
                 let argStrings = arg.argStrings
                 
@@ -69,7 +70,8 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
                     let triggeredFlag = commandline[foundIndex]
                     
                     do {
-                        self.state = try arg.execute(entity: triggeredFlag, state: self.state)
+                        let changes = try arg.execute(entity: triggeredFlag, state: self.state).difference(other: self.state)
+                        self.state = self.state.updated(with: changes)
                     } catch {
                         return onExecution(Result.error(error))
                     }
@@ -86,5 +88,27 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         } catch {
             return onExecution(Result.error(error))
         }
+    }
+}
+
+extension Dictionary where Key: Comparable, Value: Equatable {
+    func difference(other: [Key: Value]) -> [Key: Value] {
+        var differences = [Key: Value]()
+        for (k, v) in self {
+            if other[k] != v {
+                differences[k] = v
+            }
+        }
+        
+        return differences
+    }
+    
+    func updated(with changes: [Key: Value]) -> [Key: Value] {
+        var newDict = self
+        for (k, v) in changes {
+            newDict[k] = v
+        }
+        
+        return newDict
     }
 }

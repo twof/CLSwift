@@ -112,14 +112,22 @@ class CLSwiftTests: XCTestCase {
     }
     
     func testWithAssociatedArg() {
-        let flag = Flag<Bool>(argStrings: ["-f"]) { (params, state)  -> [String : Any] in
+        let flag = Flag<Bool>(argStrings: ["-f"]) { (params, state)  -> State in
             guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
             XCTAssert(params == [])
             XCTAssert(foo == "bar")
-            return state
+            var newState = state
+            newState["foo"] = "baz"
+            return newState
         }
         
-        let arg = Argument<Int>(argStrings: ["hello"], state: ["foo": "bar"], associatedArguments: [flag]) { (result) in
+        let legsFlag = Flag<Int>(argStrings: ["-l"], numArgs: .number(1)) { (params, state) -> State in
+            var newState = state
+            newState["legs"] = params[0]
+            return newState
+        }
+        
+        let arg = Argument<Int>(argStrings: ["hello"], state: ["foo": "bar", "hello": "world", "legs": 2], associatedArguments: [flag, legsFlag]) { (result) in
             switch result {
             case .success(let vals, let state):
                 XCTAssert(true)
@@ -133,7 +141,7 @@ class CLSwiftTests: XCTestCase {
             }
         }
         
-        let commandline = ["path/to/binary", "hello", "1", "2", "-f"]
+        let commandline = ["path/to/binary", "hello", "1", "2", "-f", "-l", "1"]
         
         let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
         let triggeredCommand = commandCenter.check()
