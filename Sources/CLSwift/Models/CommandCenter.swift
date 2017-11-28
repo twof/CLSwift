@@ -17,20 +17,20 @@ public struct ArgumentEntity {
 
 public class CommandCenter {
     
-    public var topLevelArgs: [ProtoArg]
+    public var commands: [ProtoCommand]
     public var input: [ArgumentEntity]
     
-    public init(topLevelArgs: [ProtoArg], input: [String]=CommandLine.arguments) {
-        self.topLevelArgs = topLevelArgs
+    public init(commands: [ProtoCommand], input: [String]=CommandLine.arguments) {
+        self.commands = commands
         let processedInput = Array(input[1...]).group(by: { $0.hasPrefix(prefix: ["--", "-"])})
         self.input = processedInput.map { ArgumentEntity(command: $0.command, parameters: $0.arguments) }
     }
     
-    public func check() -> ProtoArg? {
+    public func check() -> ProtoCommand? {
         if input.count == 0 {return nil}
 
-        for arg in self.topLevelArgs {
-            let argStrings = arg.argStrings
+        for arg in self.commands {
+            let argStrings = arg.triggers
             
             for argString in argStrings {
                 guard input.index(where: { (token) -> Bool in

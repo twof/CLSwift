@@ -12,7 +12,7 @@ public enum InputError: Error {
     
     case invalidType(String)
     case argumentNotFound
-    case wrongNumberOfArgs(expected: NumberOfArgs, actual: Int)
+    case wrongNumberOfArgs(expected: NumberOfParams, actual: Int)
     case invalidCommand
     case unimplimented
 }

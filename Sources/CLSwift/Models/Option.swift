@@ -1,25 +1,25 @@
 /// ProtoFlags act as filters. Their only means of interaction with top tier arguments is through alteration
 /// of arg.state
-public protocol ProtoFlag {
-    var argStrings: [String] {get set}
-    var numArgs: NumberOfArgs {get set}
+public protocol ProtoOption {
+    var triggers: [String] {get set}
+    var numArgs: NumberOfParams {get set}
     func execute(entity: ArgumentEntity, state: State) throws -> State
     func getHelp() -> String
 }
 
-public class Flag<U: LosslessStringConvertible>: ProtoFlag {
+public class Option<U: LosslessStringConvertible>: ProtoOption {
     public var type: LosslessStringConvertible.Type = U.self
-    public var argStrings: [String]
-    public var numArgs: NumberOfArgs
+    public var triggers: [String]
+    public var numArgs: NumberOfParams
     var help: String
     
     public var onExecution: ([U], State) -> State
     
-    public init(argStrings: [String],
+    public init(triggers: [String],
                 help: String,
-                numArgs: NumberOfArgs = .any,
+                numArgs: NumberOfParams = .any,
                 onExecution: @escaping ([U], State) -> State) {
-        self.argStrings = argStrings
+        self.triggers = triggers
         self.help = help
         self.numArgs = numArgs
         
@@ -43,7 +43,7 @@ public class Flag<U: LosslessStringConvertible>: ProtoFlag {
     }
     
     public func getHelp() -> String {
-        let possibleArgs: String = self.argStrings.joined(separator: ", ")
+        let possibleArgs: String = self.triggers.joined(separator: ", ")
         let types: String = self.numArgs.stringRep(typeString: String(describing: self.type))
         return "\(possibleArgs) \(types)    \(self.help)"
     }

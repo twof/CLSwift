@@ -1,6 +1,6 @@
 import Foundation
 
-public enum NumberOfArgs {
+public enum NumberOfParams {
     case none
     case range(Range<Int>)
     case greaterThan(Int)
@@ -44,48 +44,47 @@ public enum NumberOfArgs {
     }
 }
 
-public protocol ProtoArg {
-    var argStrings: [String] {get set}
+public protocol ProtoCommand {
+    var triggers: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
     var state: State {get set}
     
     func execute(commandline: [ArgumentEntity])
 }
 
-public class Argument<U: LosslessStringConvertible>: ProtoArg {
+public class Command<U: LosslessStringConvertible>: ProtoCommand {
     public var type: LosslessStringConvertible.Type = U.self
-    public var argStrings: [String]
+    public var triggers: [String]
     public var state: State
-    var associatedArguments: [ProtoFlag]
-    var numArgs: NumberOfArgs
+    var options: [ProtoOption]
+    var numArgs: NumberOfParams
     var help: String
     
     var onExecution: ([U], State) -> ()
     
-    public init(argStrings: [String],
+    public init(triggers: [String],
                 help: String,
                 state: State=[:],
-                numArgs: NumberOfArgs = .any,
-                associatedArguments: [ProtoFlag]=[],
+                numArgs: NumberOfParams = .any,
+                associatedArguments: [ProtoOption]=[],
                 onExecution: @escaping ([U], State) -> ()) {
-        self.argStrings = argStrings
+        self.triggers = triggers
         self.help = help
         self.state = state
         self.numArgs = numArgs
-        self.associatedArguments = associatedArguments
+        self.options = associatedArguments
 
         self.onExecution = onExecution
     }
     
     public func execute(commandline: [ArgumentEntity]) {
         if !self.numArgs.isValid(args: commandline[0].parameters) {
-//            return onExecution(.error(InputError.tooFewArgs))
             print(getHelp())
             return
         }
         
-        for arg in associatedArguments {
-            let argStrings = arg.argStrings
+        for arg in options {
+            let argStrings = arg.triggers
             
             for argString in argStrings {
                 guard let foundIndex = commandline.index(where: { (token) -> Bool in
@@ -100,7 +99,6 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
                 } catch {
                     print(getHelp())
                     return
-//                    return onExecution(Result.error(error))
                 }
             }
         }
@@ -114,14 +112,13 @@ public class Argument<U: LosslessStringConvertible>: ProtoArg {
         } catch {
             print(getHelp())
             return
-//            return onExecution(Result.error(error))
         }
     }
     
     private func getHelp() -> String {
-        var usage =
+        let usage =
 """
-Usage: \(argStrings.joined(separator: "|")) \(numArgs.stringRep(typeString: String(describing: self.type))) [options]
+Usage: \(triggers.joined(separator: "|")) \(numArgs.stringRep(typeString: String(describing: self.type))) [options]
         
 """
         var helpString =
@@ -132,7 +129,7 @@ Description:
 
 """
         
-        for flag in associatedArguments {
+        for flag in options {
             helpString.append("\n\(flag.getHelp())")
         }
         
