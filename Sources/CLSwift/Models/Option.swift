@@ -2,7 +2,7 @@
 /// of arg.state
 public protocol ProtoOption {
     var triggers: [String] {get set}
-    var numArgs: NumberOfParams {get set}
+    var numParams: NumberOfParams {get set}
     func execute(entity: ArgumentEntity, state: State) throws -> State
     func getHelp() -> String
 }
@@ -10,25 +10,25 @@ public protocol ProtoOption {
 public class Option<U: LosslessStringConvertible>: ProtoOption {
     public var type: LosslessStringConvertible.Type = U.self
     public var triggers: [String]
-    public var numArgs: NumberOfParams
+    public var numParams: NumberOfParams
     var help: String
     
     public var onExecution: ([U], State) -> State
     
     public init(triggers: [String],
                 help: String,
-                numArgs: NumberOfParams = .any,
+                numParams: NumberOfParams = .any,
                 onExecution: @escaping ([U], State) -> State) {
         self.triggers = triggers
         self.help = help
-        self.numArgs = numArgs
+        self.numParams = numParams
         
         self.onExecution = onExecution
     }
     
     public func execute(entity: ArgumentEntity, state: State) throws -> State {
-        if !self.numArgs.isValid(args: entity.parameters) {
-            throw InputError.wrongNumberOfArgs(expected: self.numArgs, actual: entity.parameters.count)
+        if !self.numParams.isValid(args: entity.parameters) {
+            throw InputError.wrongNumberOfArgs(expected: self.numParams, actual: entity.parameters.count)
         }
         
         do {
@@ -44,7 +44,7 @@ public class Option<U: LosslessStringConvertible>: ProtoOption {
     
     public func getHelp() -> String {
         let possibleArgs: String = self.triggers.joined(separator: ", ")
-        let types: String = self.numArgs.stringRep(typeString: String(describing: self.type))
+        let types: String = self.numParams.stringRep(typeString: String(describing: self.type))
         return "\(possibleArgs) \(types)    \(self.help)"
     }
 }

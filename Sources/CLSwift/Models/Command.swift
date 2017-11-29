@@ -57,7 +57,7 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
     public var triggers: [String]
     public var state: State
     var options: [ProtoOption]
-    var numArgs: NumberOfParams
+    var numParams: NumberOfParams
     var help: String
     
     var onExecution: ([U], State) -> ()
@@ -65,20 +65,20 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
     public init(triggers: [String],
                 help: String,
                 state: State=[:],
-                numArgs: NumberOfParams = .any,
-                associatedArguments: [ProtoOption]=[],
+                numParams: NumberOfParams = .any,
+                options: [ProtoOption]=[],
                 onExecution: @escaping ([U], State) -> ()) {
         self.triggers = triggers
         self.help = help
         self.state = state
-        self.numArgs = numArgs
-        self.options = associatedArguments
+        self.numParams = numParams
+        self.options = options
 
         self.onExecution = onExecution
     }
     
     public func execute(commandline: [ArgumentEntity]) {
-        if !self.numArgs.isValid(args: commandline[0].parameters) {
+        if !self.numParams.isValid(args: commandline[0].parameters) {
             print(getHelp())
             return
         }
@@ -118,7 +118,7 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
     private func getHelp() -> String {
         let usage =
 """
-Usage: \(triggers.joined(separator: "|")) \(numArgs.stringRep(typeString: String(describing: self.type))) [options]
+Usage: \(triggers.joined(separator: "|")) \(numParams.stringRep(typeString: String(describing: self.type))) [options]
         
 """
         var helpString =

@@ -30,7 +30,7 @@ class CLSwiftTests: XCTestCase {
     func testLowerThanMinimumArgumentsInputLength() {
         let command = Command<Int>(triggers: ["hello"],
                                    help: "Does foo for bar",
-                                   numArgs: .number(4))
+                                   numParams: .number(4))
         { (vals, state) in
             // Success is not expected
             XCTFail()
@@ -51,7 +51,7 @@ class CLSwiftTests: XCTestCase {
     func testGreaterThanMaximumArgumentsInputLength() {
         let command = Command<Int>(triggers: ["hello"],
                                    help: "Does foo for bar",
-                                   numArgs: .number(1))
+                                   numParams: .number(1))
         { (vals, state) in
             XCTFail()
         }
@@ -67,35 +67,7 @@ class CLSwiftTests: XCTestCase {
             XCTFail()
         }
     }
-    //
-    //    func testLessThanArgumentNumberRange() {
-    //        let arg = Argument<Int>(argStrings: ["hello"], numArgs: .range(3..<5)) { (result) in
-    //            switch result {
-    //            case .success(_):
-    //                // Success is not expected
-    //                XCTFail()
-    //            case .error(let error):
-    //                switch error {
-    //                case InputError.tooFewArgs:
-    //                    XCTAssert(true)// This error is expected
-    //                default:
-    //                    XCTFail()
-    //                }
-    //            }
-    //        }
-    //
-    //        let commandline = ["path/to/binary", "hello", "1", "2"]
-    //
-    //        let commandCenter = CommandCenter(topLevelArgs: [arg], input: commandline)
-    //        let triggeredCommand = commandCenter.check()
-    //
-    //        if let triggeredCommand = triggeredCommand {
-    //            triggeredCommand.execute(commandline: commandCenter.input)
-    //        } else {
-    //            XCTFail()
-    //        }
-    //    }
-    //
+
     func testWithAssociatedArg() {
         let boolOption = Option<Bool>(triggers: ["-f"],
                                       help: "Replaces foo value with baz")
@@ -110,7 +82,7 @@ class CLSwiftTests: XCTestCase {
         
         let legsOption = Option<Int>(triggers: ["-l"],
                                      help: "Sets leg number of legs",
-                                     numArgs: .number(1))
+                                     numParams: .number(1))
         { (params, state) -> State in
             var newState = state
             newState["legs"] = params[0]
@@ -120,7 +92,7 @@ class CLSwiftTests: XCTestCase {
         let command = Command<Int>(triggers: ["hello"],
                                    help: "Takes foo, hello and legs and does foobar",
                                    state: ["foo": "bar", "hello": "world", "legs": 2],
-                                   associatedArguments: [boolOption, legsOption])
+                                   options: [boolOption, legsOption])
         { (vals, state) in
             if state["foo"] as? String == "baz" {
                 print("-f flag used")
@@ -157,7 +129,7 @@ class CLSwiftTests: XCTestCase {
         
         let legsOption = Option<Int>(triggers: ["-l"],
                                      help: "Sets leg number of legs",
-                                     numArgs: .number(1))
+                                     numParams: .number(1))
         { (params, state) -> State in
             var newState = state
             newState["legs"] = params[0]
@@ -167,8 +139,8 @@ class CLSwiftTests: XCTestCase {
         let command = Command<Int>(triggers: ["hello"],
                                    help: "Takes foo, hello and legs and does foobar",
                                    state: ["foo": "bar", "hello": "world", "legs": 2],
-                                   numArgs: .number(2),
-                                   associatedArguments: [option, legsOption])
+                                   numParams: .number(2),
+                                   options: [option, legsOption])
         { (vals, state) in
             XCTFail()
         }
