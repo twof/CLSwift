@@ -27,7 +27,7 @@ Options are used to alter the functionality of an argument. This is done by gett
 
     let legsOption = Option<Int>(triggers: ["-l"],
                                  help: "Sets leg number of legs",
-                                 numArgs: .number(1))
+                                 numParams: .number(1))
     { (params, state) -> State in
         var newState = state
         newState["legs"] = params[0]
@@ -40,8 +40,8 @@ Just like `Option`, the closure parameter is executed when one of the  `triggers
     let command = Command<Int>(triggers: ["hello"],
                                help: "Takes foo, hello and legs and does foobar",
                                state: ["foo": "bar", "hello": "world", "legs": 2],
-                               numArgs: .number(2),
-                               associatedArguments: [boolFlag, legsFlag])
+                               numParams: .number(2),
+                               options: [boolFlag, legsFlag])
     { (vals, state) in
         if state["foo"] as? String == "baz" {
             print("-f flag used")
@@ -54,11 +54,11 @@ Just like `Option`, the closure parameter is executed when one of the  `triggers
 ### Command Center
 The following is the typical use case in which `CommandLine.arguments` is used for input, but you can also supply your own input for testing purposes by simply replacing `CommandLine.arguments` with your own array of strings.
 
-The first step is figuring out which of your arguments was triggered if any. Then you call `.execute()` on that argument which executes the closure supplied on initialization.
+The first step is figuring out which of your commands was triggered if any. Then you call `.execute()` on that command which executes the closure supplied on initialization.
 
 `CommandCenter` takes your input and breaks it up into more usable objects which are stored in `commandCenter.input`.
 
-    let commandCenter = CommandCenter(topLevelArgs: [arg], input: CommandLine.arguments)
+    let commandCenter = CommandCenter(commands: [command], input: CommandLine.arguments)
     let triggeredCommand = commandCenter.check()
 
     if let triggeredCommand = triggeredCommand {
@@ -78,4 +78,4 @@ The help message for the above looks like this
 
 This could be triggered if no parameters where supplied for `-l` for example which would look like this
 
-    hello 1 2 -f -l
+    $ ./example hello 1 2 -f -l
