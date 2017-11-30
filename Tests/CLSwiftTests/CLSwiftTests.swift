@@ -69,8 +69,8 @@ class CLSwiftTests: XCTestCase {
     }
 
     func testWithAssociatedArg() {
-        let boolOption = Option<Bool>(triggers: ["-f"],
-                                      help: "Replaces foo value with baz")
+        let flag = Flag(triggers: ["-f"],
+                        help: "Replaces foo value with baz")
         { (params, state)  -> State in
             guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
             XCTAssert(params == [])
@@ -92,7 +92,7 @@ class CLSwiftTests: XCTestCase {
         let command = Command<Int>(triggers: ["hello"],
                                    help: "Takes foo, hello and legs and does foobar",
                                    state: ["foo": "bar", "hello": "world", "legs": 2],
-                                   options: [boolOption, legsOption])
+                                   options: [flag, legsOption])
         { (vals, state) in
             if state["foo"] as? String == "baz" {
                 print("-f flag used")
@@ -116,8 +116,8 @@ class CLSwiftTests: XCTestCase {
     }
     
     func testFailureWithFlags() {
-        let option = Option<Bool>(triggers: ["-f"],
-                                  help: "Replaces foo value with baz")
+        let option = Flag(triggers: ["-f"],
+                          help: "Replaces foo value with baz")
         { (params, state)  -> State in
             guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
             XCTAssert(params == [])

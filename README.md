@@ -15,10 +15,10 @@ There are a large number of really useful commandline tools that work on Linux, 
 ## Examples
 
 ### Options
-Options are used to alter the functionality of an argument. This is done by getting a dictionary representing state from the argument and changing values within that dictionary. The closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated.
+Options are used to alter the functionality of an argument. This is done by getting a dictionary representing state from the argument and changing values within that dictionary. The closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated. `Flag` is an `Option` that takes no parameters.
 
-    let boolOption = Option<Bool>(triggers: ["-f"],
-                                  help: "Replaces foo value with baz")
+    let flag = Flag(triggers: ["-f"],
+                          help: "Replaces foo value with baz")
     { (params, state)  -> State in
         var newState = state
         newState["foo"] = "baz"
@@ -41,7 +41,7 @@ Just like `Option`, the closure parameter is executed when one of the  `triggers
                                help: "Takes foo, hello and legs and does foobar",
                                state: ["foo": "bar", "hello": "world", "legs": 2],
                                numParams: .number(2),
-                               options: [boolFlag, legsFlag])
+                               options: [flag, legsOption])
     { (vals, state) in
         if state["foo"] as? String == "baz" {
             print("-f flag used")
