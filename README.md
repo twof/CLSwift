@@ -17,18 +17,22 @@ There are a large number of really useful commandline tools that work on Linux, 
 ### Options
 Options are used to alter the functionality of an argument. This is done by getting a dictionary representing state from the argument and changing values within that dictionary. The closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated. `Flag` is an `Option` that takes no parameters.
 
-    let flag = Flag(triggers: ["-f"],
-                          help: "Replaces foo value with baz")
-    { (params, state)  -> State in
+    let flag = Flag(
+        triggers: ["-f"],
+        help: "Replaces foo value with baz",
+        state: ["foo": "bar"]
+    ) { (params, state)  -> State in
         var newState = state
         newState["foo"] = "baz"
         return newState
     }
 
-    let legsOption = Option<Int>(triggers: ["-l"],
-                                 help: "Sets leg number of legs",
-                                 numParams: .number(1))
-    { (params, state) -> State in
+    let legsOption = Option<Int>(
+        triggers: ["-l"],
+        help: "Sets leg number of legs",
+        state: ["legs": 2],
+        numParams: .number(1)
+    ) { (params, state) -> State in
         var newState = state
         newState["legs"] = params[0]
         return newState
@@ -37,12 +41,12 @@ Options are used to alter the functionality of an argument. This is done by gett
 ### Commands
 Just like `Option`, the closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated. `Option`s are attatched to an argument by passing them in on initialization. This is nice because if you have many arguments that use the same option, you can reuse the exact same `Option` instance.
 
-    let command = Command<Int>(triggers: ["hello"],
-                               help: "Takes foo, hello and legs and does foobar",
-                               state: ["foo": "bar", "hello": "world", "legs": 2],
-                               numParams: .number(2),
-                               options: [flag, legsOption])
-    { (vals, state) in
+    let command = Command<Int>(
+        triggers: ["hello"],
+        help: "Takes foo, hello and legs and does foobar",
+        numParams: .number(2),
+        options: [flag, legsOption]
+    ) { (vals, state) in
         if state["foo"] as? String == "baz" {
             print("-f flag used")
         }
