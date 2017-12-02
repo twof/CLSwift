@@ -66,7 +66,7 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
                 help: String,
                 numParams: NumberOfParams = .any,
                 options: [ProtoOption]=[],
-                onExecution: @escaping ([U], State) -> ()) {
+                onExecution: @escaping ([U], State) throws -> ()) {
         self.triggers = triggers
         self.help = help
         self.numParams = numParams
