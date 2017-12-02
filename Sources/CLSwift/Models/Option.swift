@@ -3,6 +3,7 @@
 public protocol ProtoOption {
     var triggers: [String] {get set}
     var numParams: NumberOfParams {get set}
+    var state: State {get set}
     func execute(entity: ArgumentEntity, state: State) throws -> State
     func getHelp() -> String
 }
@@ -11,16 +12,19 @@ public class Option<U: LosslessStringConvertible>: ProtoOption {
     public var type: LosslessStringConvertible.Type = U.self
     public var triggers: [String]
     public var numParams: NumberOfParams
+    public var state: State
     var help: String
     
     public var onExecution: ([U], State) -> State
     
     public init(triggers: [String],
                 help: String,
+                state: State,
                 numParams: NumberOfParams = .any,
                 onExecution: @escaping ([U], State) -> State) {
         self.triggers = triggers
         self.help = help
+        self.state = state
         self.numParams = numParams
         
         self.onExecution = onExecution

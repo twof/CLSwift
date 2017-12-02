@@ -35,7 +35,7 @@ Options are used to alter the functionality of an argument. This is done by gett
     }
 
 ### Commands
-Just like `Option`, the closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated. `Option`s are attatched to an argument by passing them in on initialization. This is nice because if you have many arguments that use the same flag, you can reuse the exact same `Option` instance.
+Just like `Option`, the closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated. `Option`s are attatched to an argument by passing them in on initialization. This is nice because if you have many arguments that use the same option, you can reuse the exact same `Option` instance.
 
     let command = Command<Int>(triggers: ["hello"],
                                help: "Takes foo, hello and legs and does foobar",

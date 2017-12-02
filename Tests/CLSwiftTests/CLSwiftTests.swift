@@ -69,9 +69,11 @@ class CLSwiftTests: XCTestCase {
     }
 
     func testWithAssociatedArg() {
-        let flag = Flag(triggers: ["-f"],
-                        help: "Replaces foo value with baz")
-        { (state)  -> State in
+        let flag = Flag(
+            triggers: ["-f"],
+            help: "Replaces foo value with baz",
+            state: ["foo": "bar"]
+        ) { (state)  -> State in
             guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
             XCTAssert(foo == "bar")
             var newState = state
@@ -79,19 +81,21 @@ class CLSwiftTests: XCTestCase {
             return newState
         }
         
-        let legsOption = Option<Int>(triggers: ["-l"],
-                                     help: "Sets leg number of legs",
-                                     numParams: .number(1))
-        { (params, state) -> State in
+        let legsOption = Option<Int>(
+            triggers: ["-l"],
+            help: "Sets leg number of legs",
+            state: ["legs": 2],
+            numParams: .number(1)
+        ) { (params, state) -> State in
             var newState = state
             newState["legs"] = params[0]
             return newState
         }
         
-        let command = Command<Int>(triggers: ["hello"],
-                                   help: "Takes foo, hello and legs and does foobar",
-                                   state: ["foo": "bar", "hello": "world", "legs": 2],
-                                   options: [flag, legsOption])
+        let command = Command<Int>(
+            triggers: ["hello"],
+            help: "Takes foo, hello and legs and does foobar",
+            options: [flag, legsOption])
         { (vals, state) in
             if state["foo"] as? String == "baz" {
                 print("-f flag used")
@@ -115,9 +119,11 @@ class CLSwiftTests: XCTestCase {
     }
     
     func testFailureWithFlags() {
-        let option = Flag(triggers: ["-f"],
-                          help: "Replaces foo value with baz")
-        { (state)  -> State in
+        let option = Flag(
+            triggers: ["-f"],
+            help: "Replaces foo value with baz",
+            state: ["foo": "bar"]
+        ) { (state)  -> State in
             guard let foo = state["foo"] as? String else { XCTFail(); return [:] }
             XCTAssert(foo == "bar")
             var newState = state
@@ -125,20 +131,22 @@ class CLSwiftTests: XCTestCase {
             return newState
         }
         
-        let legsOption = Option<Int>(triggers: ["-l"],
-                                     help: "Sets leg number of legs",
-                                     numParams: .number(1))
-        { (params, state) -> State in
+        let legsOption = Option<Int>(
+            triggers: ["-l"],
+            help: "Sets leg number of legs",
+            state: ["legs": 2],
+            numParams: .number(1)
+        ) { (params, state) -> State in
             var newState = state
             newState["legs"] = params[0]
             return newState
         }
         
-        let command = Command<Int>(triggers: ["hello"],
-                                   help: "Takes foo, hello and legs and does foobar",
-                                   state: ["foo": "bar", "hello": "world", "legs": 2],
-                                   numParams: .number(2),
-                                   options: [option, legsOption])
+        let command = Command<Int>(
+            triggers: ["hello"],
+            help: "Takes foo, hello and legs and does foobar",
+            numParams: .number(2),
+            options: [option, legsOption])
         { (vals, state) in
             XCTFail()
         }

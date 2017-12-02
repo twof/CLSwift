@@ -55,7 +55,7 @@ public protocol ProtoCommand {
 public class Command<U: LosslessStringConvertible>: ProtoCommand {
     public var type: LosslessStringConvertible.Type = U.self
     public var triggers: [String]
-    public var state: State
+    public var state: State = [:]
     var options: [ProtoOption]
     var numParams: NumberOfParams
     var help: String
@@ -64,17 +64,19 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
     
     public init(triggers: [String],
                 help: String,
-                state: State=[:],
                 numParams: NumberOfParams = .any,
                 options: [ProtoOption]=[],
                 onExecution: @escaping ([U], State) -> ()) {
         self.triggers = triggers
         self.help = help
-        self.state = state
         self.numParams = numParams
         self.options = options
 
         self.onExecution = onExecution
+        
+        self.state = options.reduce(into: [:]) { (result, option) in
+            option.state.forEach {result[$0] = $1 }
+        }
     }
     
     public func execute(commandline: [ArgumentEntity]) {
