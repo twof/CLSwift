@@ -15,4 +15,5 @@ public enum InputError: Error {
     case wrongNumberOfArgs(expected: NumberOfParams, actual: Int)
     case invalidCommand
     case unimplimented
+    case customError(String)
 }

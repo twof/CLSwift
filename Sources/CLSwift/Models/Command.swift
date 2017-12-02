@@ -60,7 +60,7 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
     var numParams: NumberOfParams
     var help: String
     
-    var onExecution: ([U], State) -> ()
+    var onExecution: ([U], State) throws -> ()
     
     public init(triggers: [String],
                 help: String,
@@ -110,7 +110,10 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
                 return try arg.convertTo(U.self)
             }
             
-            return onExecution(args, self.state)
+            return try onExecution(args, self.state)
+        } catch InputError.customError(let message) {
+            print(message)
+            return
         } catch {
             print(getHelp())
             return
