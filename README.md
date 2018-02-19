@@ -17,43 +17,47 @@ There are a large number of really useful commandline tools that work on Linux, 
 ### Options
 Options are used to alter the functionality of an argument. This is done by getting a dictionary representing state from the argument and changing values within that dictionary. The closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated. `Flag` is an `Option` that takes no parameters.
 
-    let flag = Flag(
-        triggers: ["-f"],
-        help: "Replaces foo value with baz",
-        state: ["foo": "bar"]
-    ) { (params, state)  -> State in
-        var newState = state
-        newState["foo"] = "baz"
-        return newState
-    }
+```swift
+let flag = Flag(
+    triggers: ["-f"],
+    help: "Replaces foo value with baz",
+    state: ["foo": "bar"]
+) { (params, state)  -> State in
+    var newState = state
+    newState["foo"] = "baz"
+    return newState
+}
 
-    let legsOption = Option<Int>(
-        triggers: ["-l"],
-        help: "Sets leg number of legs",
-        state: ["legs": 2],
-        numParams: .number(1)
-    ) { (params, state) -> State in
-        var newState = state
-        newState["legs"] = params[0]
-        return newState
-    }
+let legsOption = Option<Int>(
+    triggers: ["-l"],
+    help: "Sets leg number of legs",
+    state: ["legs": 2],
+    numParams: .number(1)
+) { (params, state) -> State in
+    var newState = state
+    newState["legs"] = params[0]
+    return newState
+}
+```
 
 ### Commands
 Just like `Option`, the closure parameter is executed when one of the  `triggers` is found in the commandline input and parameters are validated. `Option`s are attatched to an argument by passing them in on initialization. This is nice because if you have many arguments that use the same option, you can reuse the exact same `Option` instance.
 
-    let command = Command<Int>(
-        triggers: ["hello"],
-        help: "Takes foo, hello and legs and does foobar",
-        numParams: .number(2),
-        options: [flag, legsOption]
-    ) { (vals, state) in
-        if state["foo"] as? String == "baz" {
-            print("-f flag used")
-        }
-        if state["legs"] as? Int != 2 {
-            print("-l flag used")
-        }
+```swift
+let command = Command<Int>(
+    triggers: ["hello"],
+    help: "Takes foo, hello and legs and does foobar",
+    numParams: .number(2),
+    options: [flag, legsOption]
+) { (vals, state) in
+    if state["foo"] as? String == "baz" {
+        print("-f flag used")
     }
+    if state["legs"] as? Int != 2 {
+        print("-l flag used")
+    }
+}
+```
     
 ### Command Center
 The following is the typical use case in which `CommandLine.arguments` is used for input, but you can also supply your own input for testing purposes by simply replacing `CommandLine.arguments` with your own array of strings.
@@ -62,24 +66,30 @@ The first step is figuring out which of your commands was triggered if any. Then
 
 `CommandCenter` takes your input and breaks it up into more usable objects which are stored in `commandCenter.input`.
 
-    let commandCenter = CommandCenter(commands: [command], input: CommandLine.arguments)
-    let triggeredCommand = commandCenter.check()
+```swift
+let commandCenter = CommandCenter(commands: [command], input: CommandLine.arguments)
+let triggeredCommand = commandCenter.check()
 
-    if let triggeredCommand = triggeredCommand {
-        triggeredCommand.execute(commandline: commandCenter.input)
-    }
+if let triggeredCommand = triggeredCommand {
+    triggeredCommand.execute(commandline: commandCenter.input)
+}
+```
     
 ### Help message
 The help message for the above looks like this
 
-    Usage: hello <Int, Int> [options]
+```bash
+Usage: hello <Int, Int> [options]
 
-    Description:
-    Takes foo, hello and legs and does foobar
+Description:
+Takes foo, hello and legs and does foobar
 
-    -f     Replaces foo value with baz
-    -l <Int>    Sets leg number of legs
+-f          Replaces foo value with baz
+-l <Int>    Sets leg number of legs
+```
 
 This could be triggered if no parameters where supplied for `-l` for example which would look like this
 
-    $ ./example hello 1 2 -f -l
+```bash
+$ ./example hello 1 2 -f -l
+```
