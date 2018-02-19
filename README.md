@@ -84,7 +84,7 @@ Usage: hello <Int, Int> [options]
 Description:
 Takes foo, hello and legs and does foobar
 
--f     Replaces foo value with baz
+-f          Replaces foo value with baz
 -l <Int>    Sets leg number of legs
 ```
 
