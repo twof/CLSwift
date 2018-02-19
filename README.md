@@ -88,7 +88,7 @@ Takes foo, hello and legs and does foobar
 -l <Int>    Sets leg number of legs
 ```
 
-This could be triggered if no parameters where supplied for `-l` for example which would look like this
+This could be triggered if no parameters were supplied for `-l` for example which would look like this
 
 ```bash
 $ ./example hello 1 2 -f -l
