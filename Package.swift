@@ -1,8 +1,11 @@
-// swift-tools-version:3.1
-
+// swift-tools-version:4.0
 import PackageDescription
 
 let package = Package(
     name: "CLSwift",
-    dependencies: []
+    dependencies: [],
+    targets: [
+        .target(name: "CLSwift", dependencies: []),
+        .testTarget(name: "CLSwiftTests", dependencies: ["CLSwift"]),
+        ]
 )

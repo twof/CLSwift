@@ -17,11 +17,13 @@ public class Option<U: LosslessStringConvertible>: ProtoOption {
     
     public var onExecution: ([U], State) -> State
     
-    public init(triggers: [String],
-                help: String,
-                state: State,
-                numParams: NumberOfParams = .any,
-                onExecution: @escaping ([U], State) -> State) {
+    public init(
+        triggers: [String],
+        help: String,
+        state: State,
+        numParams: NumberOfParams = .any,
+        onExecution: @escaping ([U], State) -> State
+    ) {
         self.triggers = triggers
         self.help = help
         self.state = state

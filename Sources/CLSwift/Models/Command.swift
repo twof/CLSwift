@@ -62,11 +62,13 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
     
     var onExecution: ([U], State) throws -> ()
     
-    public init(triggers: [String],
-                help: String,
-                numParams: NumberOfParams = .any,
-                options: [ProtoOption]=[],
-                onExecution: @escaping ([U], State) throws -> ()) {
+    public init(
+        triggers: [String],
+        help: String,
+        numParams: NumberOfParams = .any,
+        options: [ProtoOption]=[],
+        onExecution: @escaping ([U], State) throws -> ()
+    ) {
         self.triggers = triggers
         self.help = help
         self.numParams = numParams

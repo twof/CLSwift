@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import CLSwift
 
 class CLSwiftTests: XCTestCase {
     
@@ -28,10 +29,11 @@ class CLSwiftTests: XCTestCase {
     
     
     func testLowerThanMinimumArgumentsInputLength() {
-        let command = Command<Int>(triggers: ["hello"],
-                                   help: "Does foo for bar",
-                                   numParams: .number(4))
-        { (vals, state) in
+        let command = Command<Int>(
+            triggers: ["hello"],
+           help: "Does foo for bar",
+           numParams: .number(4)
+        ) { (vals, state) in
             // Success is not expected
             XCTFail()
         }
@@ -49,10 +51,11 @@ class CLSwiftTests: XCTestCase {
     }
     
     func testGreaterThanMaximumArgumentsInputLength() {
-        let command = Command<Int>(triggers: ["hello"],
-                                   help: "Does foo for bar",
-                                   numParams: .number(1))
-        { (vals, state) in
+        let command = Command<Int>(
+            triggers: ["hello"],
+           help: "Does foo for bar",
+           numParams: .number(1)
+        ) { (vals, state) in
             XCTFail()
         }
         
@@ -95,8 +98,8 @@ class CLSwiftTests: XCTestCase {
         let command = Command<Int>(
             triggers: ["hello"],
             help: "Takes foo, hello and legs and does foobar",
-            options: [flag, legsOption])
-        { (vals, state) in
+            options: [flag, legsOption]
+        ) { (vals, state) in
             if state["foo"] as? String == "baz" {
                 print("-f flag used")
             }
@@ -146,8 +149,8 @@ class CLSwiftTests: XCTestCase {
             triggers: ["hello"],
             help: "Takes foo, hello and legs and does foobar",
             numParams: .number(2),
-            options: [option, legsOption])
-        { (vals, state) in
+            options: [option, legsOption]
+        ) { (vals, state) in
             XCTFail()
         }
         
