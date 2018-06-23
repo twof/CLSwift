@@ -15,10 +15,15 @@ public struct ArgumentEntity {
     let parameters: [String]
 }
 
+public struct CommandCenterSettings {
+    public var ignoreInvalidOptions: Bool = false
+}
+
 public class CommandCenter {
     
     public var commands: [ProtoCommand]
     public var input: [ArgumentEntity]
+    public var settings: CommandCenterSettings = .init()
     
     public init(commands: [ProtoCommand], input: [String]=CommandLine.arguments) {
         self.commands = commands
@@ -42,5 +47,9 @@ public class CommandCenter {
         }
         
         return nil
+    }
+    
+    public func execute() {
+        self.check()?.execute(commandline: self.input)
     }
 }

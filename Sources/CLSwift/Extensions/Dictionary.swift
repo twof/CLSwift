@@ -1,9 +1,10 @@
-public extension Dictionary where Key: Comparable, Value: Equatable {
+public extension Dictionary where Key == String, Value == StateType {
     public func difference(other: [Key: Value]) -> [Key: Value] {
         var differences = [Key: Value]()
-        for (k, v) in self {
-            if other[k] != v {
-                differences[k] = v
+        
+        for (k, _) in self {
+            if let changed = other[k]?.changed, changed {
+                differences[k] = other[k]
             }
         }
         
@@ -17,5 +18,9 @@ public extension Dictionary where Key: Comparable, Value: Equatable {
         }
         
         return newDict
+    }
+    
+    public func state<U, S>(for option: Option<U, S>) -> S? {
+        return self[option.triggers.joined()] as? S
     }
 }

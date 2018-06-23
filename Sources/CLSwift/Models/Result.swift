@@ -8,9 +8,12 @@
 
 import Foundation
 
-public typealias State = [String: AnyHashable]
+protocol StateProtocol {
+    // changed should not be publicly accessible
+    // it has great chance to ruin the internals of the framework
+    var changed: Bool {get set}
+}
 
-public enum Result<T> {
-    case success(T, State)
-    case error(Error)
+public class StateType: StateProtocol {
+    var changed: Bool = false
 }

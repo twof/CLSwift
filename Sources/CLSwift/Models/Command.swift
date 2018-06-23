@@ -47,7 +47,7 @@ public enum NumberOfParams {
 public protocol ProtoCommand {
     var triggers: [String] {get set}
     var type: LosslessStringConvertible.Type {get set}
-    var state: State {get set}
+    var state: [String: StateType] {get set}
     
     func execute(commandline: [ArgumentEntity])
 }
@@ -55,19 +55,19 @@ public protocol ProtoCommand {
 public class Command<U: LosslessStringConvertible>: ProtoCommand {
     public var type: LosslessStringConvertible.Type = U.self
     public var triggers: [String]
-    public var state: State = [:]
+    public var state: [String: StateType] = [:]
     var options: [ProtoOption]
     var numParams: NumberOfParams
     var help: String
     
-    var onExecution: ([U], State) throws -> ()
+    var onExecution: ([U], [String: StateType]) throws -> ()
     
     public init(
         triggers: [String],
         help: String,
         numParams: NumberOfParams = .any,
         options: [ProtoOption]=[],
-        onExecution: @escaping ([U], State) throws -> ()
+        onExecution: @escaping ([U], [String: StateType]) throws -> ()
     ) {
         self.triggers = triggers
         self.help = help
@@ -76,8 +76,8 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
 
         self.onExecution = onExecution
         
-        self.state = options.reduce(into: [:]) { (result, option) in
-            option.state.forEach {result[$0] = $1 }
+        self.state = options.reduce(into: [String: StateType]()) { (result, option) in
+            result[option.triggers.joined() as String] = option.state
         }
     }
     
@@ -98,8 +98,9 @@ public class Command<U: LosslessStringConvertible>: ProtoCommand {
                 let triggeredFlag = commandline[foundIndex]
                 
                 do {
-                    let changes = try arg.execute(entity: triggeredFlag, state: self.state).difference(other: self.state)
-                    self.state = self.state.updated(with: changes)
+                    let changes = try arg.execute(entity: triggeredFlag, state: self.state)
+                    let differences = self.state.difference(other: changes)
+                    self.state = self.state.updated(with: differences)
                 } catch {
                     print(getHelp())
                     return
