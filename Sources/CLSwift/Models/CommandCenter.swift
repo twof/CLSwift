@@ -17,16 +17,16 @@ public struct ArgumentEntity {
 
 public class CommandCenter {
     
-    public var commands: [ProtoCommand]
+    public var commands: [Command]
     public var input: [ArgumentEntity]
     
-    public init(commands: [ProtoCommand], input: [String]=CommandLine.arguments) {
+    public init(commands: [Command], input: [String]=CommandLine.arguments) {
         self.commands = commands
         let processedInput = Array(input[1...]).group(by: { $0.hasPrefix(prefix: ["--", "-"])})
         self.input = processedInput.map { ArgumentEntity(command: $0.command, parameters: $0.arguments) }
     }
     
-    public func check() -> ProtoCommand? {
+    public func check() -> Command? {
         if input.count == 0 {return nil}
 
         for arg in self.commands {
